@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: pg-bigdata
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/data
+    cpus: "1.0"
+
+  spark:
+    image: jupyter/pyspark-notebook:latest
+    container_name: spark-lab
+    ports:
+      - "8888:8888"
+      - "4040:4040"
+      - "4041:4041"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data:/home/jovyan/data
+      - ./spark-events:/tmp/spark-events
+    environment:
+      - JUPYTER_TOKEN=lab
+    command: start-notebook.sh --NotebookApp.token=lab
