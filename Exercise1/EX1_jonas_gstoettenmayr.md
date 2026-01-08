@@ -2,6 +2,8 @@
 
 My **repo:** [https://github.com/jonas-gstoettenmayr/SDB3_2](https://github.com/jonas-gstoettenmayr/SDB3_2)
 
+This contains the ipynb as well as the .sql files for the queries
+
 ## Part 2 - EX 1
 
 ### Making the new table
