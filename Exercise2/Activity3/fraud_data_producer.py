@@ -1,50 +1,52 @@
-import os
-import subprocess
-import sys
-import random
 import time
-from datetime import datetime, timedelta
+import random
+from datetime import datetime
 import psycopg2
-from psycopg2 import extras
-# Connection config
-conn_params = "host=localhost port=5432 dbname=mydb user=postgres password=postgrespw"
 
-def setup_db():
-    conn = psycopg2.connect(conn_params)
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS transactions (
-            id SERIAL PRIMARY KEY,
-            user_id INT,
-            amount DECIMAL(10,2),
-            card_type VARCHAR(20),
-            merchant_id INT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
+DB_NAME = "mydb"
+DB_USER = "postgres"
+DB_PASSWORD = "postgrespw"
+DB_HOST = "127.0.0.1"
+DB_PORT = 5433  # change to 5433 if your docker port is mapped to 5433
 
-def generate_data(batch_size=1000):
-    conn = psycopg2.connect(conn_params)
-    cur = conn.cursor()
-    
-    while True:
-        data = [
-            (random.randint(1000, 9999), 
-             round(random.uniform(5.0, 5000.0), 2), 
-             random.choice(['VISA', 'MASTERCARD', 'AMEX']),
-             random.randint(1, 500)) 
-            for _ in range(batch_size)
-        ]
-        
-        query = "INSERT INTO transactions (user_id, amount, card_type, merchant_id) VALUES %s"
-        extras.execute_values(cur, query, data)
-        conn.commit()
-        print(f"Inserted {batch_size} transactions...")
-        time.sleep(0.5) # Adjust sleep to hit your specific "thousands/sec" target
+CREATE_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    card_id VARCHAR(32) NOT NULL,
+    amount NUMERIC(10,2) NOT NULL,
+    country VARCHAR(2) NOT NULL,
+    merchant VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+"""
+
+def main():
+    conn = psycopg2.connect(
+        dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT
+    )
+    conn.autocommit = True
+
+    with conn.cursor() as cur:
+        cur.execute(CREATE_TABLE_SQL)
+
+    cards = [f"card_{i}" for i in range(1, 200)]
+    countries = ["AT", "DE", "FR", "IT", "ES", "RO", "US", "GB"]
+    merchants = ["AMZ", "BILLA", "SPAR", "UBER", "APPLE", "ZALANDO", "IKEA"]
+
+    with conn.cursor() as cur:
+        while True:
+            card_id = random.choice(cards)
+            amount = round(random.uniform(1, 2500), 2)
+            country = random.choice(countries)
+            merchant = random.choice(merchants)
+            ts = datetime.utcnow()
+
+            cur.execute(
+                "INSERT INTO transactions (card_id, amount, country, merchant, created_at) VALUES (%s,%s,%s,%s,%s)",
+                (card_id, amount, country, merchant, ts),
+            )
+            print(f"{ts} inserted tx: {card_id} {amount} {country} {merchant}")
+            time.sleep(0.01)  # increase/decrease rate
 
 if __name__ == "__main__":
-    setup_db()
-    generate_data()
+    main()

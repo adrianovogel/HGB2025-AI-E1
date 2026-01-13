@@ -10,8 +10,8 @@ from psycopg2 import sql
 DB_NAME = "office_db"
 DB_USER = "postgres"
 DB_PASSWORD = "postgrespw"
-DB_HOST = "localhost"
-DB_PORT = 5432
+DB_HOST = "127.0.0.1"
+DB_PORT = 5433
 
 # Step 1: Connect to default database
 conn = psycopg2.connect(

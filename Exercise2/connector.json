@@ -1,0 +1,15 @@
+{
+  "name": "fraud-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgrespw",
+    "database.dbname": "mydb",
+    "topic.prefix": "dbserver1",
+    "plugin.name": "pgoutput",
+    "table.include.list": "public.transactions"
+  }
+}
