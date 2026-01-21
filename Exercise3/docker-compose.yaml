@@ -42,7 +42,7 @@ services:
       - SPARK_MODE=master
     ports:
       - "7077:7077"
-      - "8080:8080"
+      - "8088:8080"
     networks:
       - streaming-net
 
