@@ -9,7 +9,7 @@ DB_NAME = "office_db"
 DB_USER = "postgres"
 DB_PASSWORD = "postgrespw"
 DB_HOST = "localhost"
-DB_PORT = 5432
+DB_PORT = 5433 # modified port
 
 # Step 1: Connect to default database
 with psycopg.connect(
