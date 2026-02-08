@@ -21,7 +21,7 @@ OLAP systems, such as data warehouses, are optimized for conducting complex data
 
 On the contrary, OLTP is optimized for processing massive number of transactions and use by frontline workers or customer self-service applications.
 
-<tbh?>
+<tbc?>
 
 ### How indexes, materialized views, and query optimization support analytical workloads
 There are many different ways on how one can optimize the query response time, not only in OLTP, but also in OLAP. I want to focus on analytical processing in this essay. 
@@ -40,8 +40,32 @@ By dividing large tables into smaller, more manageable pieces, queries only have
 
 Another way to provide fast responses is an **optimized infrastructure** of the OLAP system. 
 
+## Streaming, Event Processing, and CDC
+In this section I analyze how stream processing systems, event streaming platforms, and Change Data Capture pipelines complement or replace batch-oriented analytics. 
+
+In batch processing, all the data is gathered and processed at set times, such as every day, week, or month. This approach is used in banking, where batch loads are used to process large volumes of transactions overnight. However, it also increases latency and consumes excessive resources. 
+
+### Differences between stream processing and incremental analytics 
+In stream processing, data is processed in the chunks as they flow in. That works very well for log-heavy or monitoring tasks, but there are also some downsides to this approach. Dealing with state snapshots, failover, and jumbled event orders requires many resources and demands constant monitoring, inflating costs and skill requirements beyond simpler batch setups. Furthermore, the concept of eventual consistency can glitch at window cutoffs, where accurate results are wanted. 
+
+Incremental analytics like Change Data Capture (CDC) detect inserts, updates, or deletes from sources in real time and refreshes only what is affected. 
+
+Where stream processing is event-reactive, focused on minimal lag and uses windowing with watermarks to achieve this, incremental analytics is delta-driven, updates the changes and needs no windowing. 
+
+<tbc: what similarities?>
+
+### Trade-offs between Latency and Consistency 
+Batch-oriented analytics ensures consistency, what leads to high latencies. Stream Processing prioritizes low latency over consistency, incremental analytics balances both very well. ö
+
+
+## Implications for AI Systems
+
+
+## Technical Positioning and Future Outlook 
+
 
 
 ## References
 https://www.ibm.com/think/topics/olap-vs-oltp
 https://medium.com/data-science/learning-multi-dimensional-indices-a7aaa2044d8e
+https://tapdata.io/blog/stream-processing-vs-incremental-computing
