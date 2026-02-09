@@ -55,13 +55,40 @@ Where stream processing is event-reactive, focused on minimal lag and uses windo
 <tbc: what similarities?>
 
 ### Trade-offs between Latency and Consistency 
-Batch-oriented analytics ensures consistency, what leads to high latencies. Stream Processing prioritizes low latency over consistency, incremental analytics balances both very well. ö
+Batch-oriented analytics ensures consistency, what leads to high latencies. Stream Processing prioritizes low latency over consistency, incremental analytics balances both very well.
 
 
 ## Implications for AI Systems
+This part goes into detail whether the discussed processing architectures support or constrain modern AI workloads like training LLMs, or AI agents that continuously generate data, feedback, and queries. 
+
+
+### Data Processing in Training and Fine-tuning LLMs
+With LLMs accurate data that is continuously updated is super important. How fast these updates must occur also depends on the use-case, but generally it holds the sooner the better. This increases the need for incremental computation as LLMs are trained with huge amounts of data, where recomputation will take a long time.
+<that true? ^>
+
+The challenges in gathering data for LLMs do not only lay in ensuring high-quality, diverse text data, but also in combining data from various sources. 
+
+Since training a Large Language Model is computationally expensive, they are only trained once on a huge knowledge base and fine-tuned later on. 
+
+There are many steps required to make the actual data useful for training the LLM. 
+
+The trained models are usually fine-tuned on task-specific datasets. 
+
+<i would now argue that real-time processing not that important as you won't train it 10 times a day, max once per day if not per week/month, depending on the size of the model / amout of data>
+
+### Retrieval-Augmented Generation (RAG)
+RAG is a more cost-effective approach to introducing new data to the LLM, as retraining takes many computational and financial costs. 
+
+Outputs of LLMs are optimized by referencing an authoritative knowledge base outside of the model's training data sources before the response is generated. 
+This is done by creating a knowledge library of accessible data sources, which occurs most often as a vector database. Relevant information is retrieved by converting the user query to a vector representation and matching it with this database. The RAG model augments the user input by adding the relevant retrieved data in context. 
+
+It is very important to avoid that this external data becomes stale. Asynchronous updates of the documents in the database and their embedding representation is necessary. Both real-time processing and periodic batch processing are acceptible options on how to implement that. In case the external data changes very frequently, real-time processing, especially incremental computing, is the better choice as the updates are monitored and accomplished almost immediately. Additionally, not all the data is copied again, only the changes that had been made.  
+
+### AI agents that continuously generate data, feedback, and queries
 
 
 ## Technical Positioning and Future Outlook 
+
 
 
 
@@ -69,3 +96,4 @@ Batch-oriented analytics ensures consistency, what leads to high latencies. Stre
 https://www.ibm.com/think/topics/olap-vs-oltp
 https://medium.com/data-science/learning-multi-dimensional-indices-a7aaa2044d8e
 https://tapdata.io/blog/stream-processing-vs-incremental-computing
+https://aws.amazon.com/what-is/retrieval-augmented-generation/
