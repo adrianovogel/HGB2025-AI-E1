@@ -1,16 +1,10 @@
 import random
 import time
-from datetime import datetime
-
-import psycopg
-
-conn_params = {
-    "host": "127.0.0.1",
-    "port": 5432,
-    "dbname": "mydb",
-    "user": "postgres",
-    "password": "postgrespw",
-}
+from datetime import datetime, timedelta
+import psycopg2
+from psycopg2 import extras
+# Connection config
+conn_params = "host=localhost port=5433 dbname=mydb user=postgres password=postgrespw"
 
 def setup_db():
     with psycopg.connect(**conn_params) as conn:

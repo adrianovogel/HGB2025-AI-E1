@@ -2,7 +2,7 @@
 
 ## Objective
 
-The goal of this exercise is to critically analyze how modern data processing architectures—originally designed for analytical workloads and event-driven systems—interact, converge, and evolve to support current and future Artificial Intelligence (AI) workloads.
+The goal of this exercise is to critically analyze how modern data processing architectures — originally designed for analytical workloads and event-driven systems — interact, converge, and evolve to support current and future Artificial Intelligence (AI) workloads.
 
 Students are expected to demonstrate a technical understanding, connect concepts across systems, and take a clear architectural position supported by reasoning.
 

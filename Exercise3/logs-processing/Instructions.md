@@ -75,7 +75,7 @@ spark-submit \
             ▼
 ┌────────────────────────┐
 │     Spark Master       │
-│  (Cluster Manager)    │
+│  (Cluster Manager)     │
 │                        │
 │  - registers app       │
 │  - allocates workers   │
@@ -110,10 +110,10 @@ docker compose up -d
 ```bash
                              +-----------------------+
                              |     Spark Driver      |
-                             |----------------------|
-                             | - Job scheduling     |
-                             | - DAG management     |
-                             | - Resource tracking  |
+                             |-----------------------|
+                             | - Job scheduling      |
+                             | - DAG management      |
+                             | - Resource tracking   |
                              +-----------------------+
                                          |
                                          v
